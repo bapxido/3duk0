@@ -1,0 +1,139 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+use yii\widgets\Pjax;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\Student */
+
+$this->title = $model->fullname;
+$this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="student-view">
+
+    <h2><?= Html::encode($this->title) ?></h2>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            // 'student_id',
+            'first_name',
+            'middle_name',
+            'last_name',
+            'birth_date',
+            'birth_place',
+            'sex',
+            'nationality',
+            'national_id',
+            'passport_number',
+            'fullname',
+            // 'photo',
+            'remarks:ntext',
+            //~ 'record_status',
+            //~ 'create_user_id',
+            //~ 'update_user_id',
+            //~ 'create_date',
+            //~ 'update_date',
+        ],
+    ]) ?>
+    
+      
+<!--
+      **********************************************************************************
+      **********************************************************************************
+-->
+		<!-- details table will be here -->
+		<?php Pjax::begin(); ?>
+		    		
+		<h3>Contacts</h3>
+		
+	    <?= \yii\grid\GridView::widget([
+		'dataProvider' => new \yii\data\ActiveDataProvider([
+			'query' => $model->getStudentContacts(),
+			'pagination' => false
+			]),
+			'columns' => [
+				['class' => 'yii\grid\SerialColumn'],
+
+				// 'student_contact_id',
+				// 'student_id',
+				'physical_address',
+				'postal_address',
+				'town_village',
+				// 'country',
+				// 'telephone',
+				'mobile',
+				// 'email:email',
+				// 'remarks:ntext',
+				// 'record_status',
+				// 'create_user_id',
+				// 'update_user_id',
+				// 'create_date',
+				// 'update_date',
+
+				//~ ['class' => 'yii\grid\ActionColumn'],
+
+			],
+		]); ?>
+		
+		<h3>Guardian</h3>
+		
+		<?= \yii\grid\GridView::widget([
+			'dataProvider' => new \yii\data\ActiveDataProvider([
+				'query' => $model->getStudentGuardians(),
+				'pagination' => false
+				]),
+			'columns' => [
+				['class' => 'yii\grid\SerialColumn'],
+
+				// 'student_guardian_id',
+				// 'student_id',
+				//~ 'first_name',
+				//~ 'middle_name',
+				//~ 'last_name',
+				'fullname',
+				'relationship',
+				'telephone',
+				'mobile',
+				// 'remarks:ntext',
+				// 'record_status',
+				// 'create_user_id',
+				// 'update_user_id',
+				// 'create_date',
+				// 'update_date',
+
+			],
+		]); ?>
+    
+		<h3>Special Needs</h3>
+		
+			<?= \yii\grid\GridView::widget([
+				'dataProvider' => new \yii\data\ActiveDataProvider([
+					'query' => $model->getStudentSpecialNeeds(),
+					'pagination' => false
+					]),
+				'columns' => [
+					['class' => 'yii\grid\SerialColumn'],
+
+					// 'student_special_need_id',
+					// 'student_id',
+					'special_need',
+					'remarks:ntext',
+					// 'record_status',
+					// 'create_user_id',
+					// 'update_user_id',
+					// 'create_date',
+					// 'update_date',
+
+				],
+			]); ?>
+		
+		<?php Pjax::end(); ?>
+<!--
+      **********************************************************************************
+      **********************************************************************************
+-->
+
+</div>

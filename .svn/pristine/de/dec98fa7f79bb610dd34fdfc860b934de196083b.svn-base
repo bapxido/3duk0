@@ -1,0 +1,179 @@
+<?php
+/* @var $this yii\web\View */
+$this->title = 'Skymouse Eduko EMIS';
+?>
+<div class="site-index">
+	
+	<div class="row">
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<!-- small box -->
+			<div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3>15</h3>
+                  <p>Messages</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-envelope"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			  <!-- small box -->
+			<div class="small-box bg-red">
+                <div class="inner">
+                  <h3>15</h3>
+                  <p>Classes</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-group"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div><!-- /.info-box-content -->
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<!-- small box -->
+			<div class="small-box bg-yellow">
+                <div class="inner">
+                  <h3 id="studentcount">0</h3>
+                  <p>Students</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-graduation-cap"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+              
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<!-- small box -->
+			<div class="small-box bg-green">
+                <div class="inner">
+                  <h3 id="teachersCount">0</h3>
+                  <p>Teachers</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-user"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+              
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+	  </div><!-- row -->
+	  
+	 <div class="stats_bar">
+		<div data-step="2" data-intro="<strong>Beautiful Elements</strong> <br/> If you are looking for a different UI, this is for you!." class="butpro butstyle">
+				<div class="sub">
+				  <h2>CLIENTS</h2>
+				  <span id="total_clientes">170</span>
+				</div>
+				<div class="stat">
+					<span class="spk1">
+						<li class="fa fa-user"></li>
+						<canvas height="13" width="74" style="display: inline-block; width: 74px; height: 13px; vertical-align: top;backgroud-color:#ccc;"></canvas>
+					</span>
+				</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>Sales</h2>
+					<span>$951,611</span>
+			</div>
+			<div class="stat">
+				<span class="up"> 13,5%</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>VISITS</h2>
+				<span>125</span>
+			</div>
+			<div class="stat">
+				<span class="down"> 20,7%</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>NEW USERS</h2>
+				<span>18</span>
+			</div>
+			<div class="stat">
+				<span class="equal"> 0%</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>AVERAGE</h2>
+				<span>3%</span>
+			</div>
+			<div class="stat">
+				<span class="spk2">
+					<canvas height="13" width="80" style="display: inline-block; width: 80px; height: 13px; vertical-align: top;"></canvas>
+				</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>Downloads</h2>
+				<span>184</span>
+			</div>
+			<div class="stat">
+				<span class="spk3">
+					<canvas height="13" width="80" style="display: inline-block; width: 80px; height: 13px; vertical-align: top;"></canvas>
+				</span>
+			</div>
+		</div>
+	</div>
+			
+    <div class="body-content">
+
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

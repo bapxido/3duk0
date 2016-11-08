@@ -1,0 +1,49 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+use	yii\widgets\ListView;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\EventsCalendarSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Events Calendars';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="events-calendar-index box box-solid box-primary">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        //'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            //'event_id',
+            'event_title',
+            'start_date',
+            'end_date',
+            'venue',
+            // 'description:ntext',
+            // 'record_status',
+            // 'create_user_id',
+            // 'create_date',
+            // 'update_user_id',
+            // 'update_date',
+
+            //['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    
+    <?php 
+		//~ echo ListView::widget([
+		//~ 'dataProvider' => $dataProvider,
+		//~ 'itemView' => '_events'
+		//~ ]);
+		
+    ?>
+
+
+</div>

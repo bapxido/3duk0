@@ -1,0 +1,62 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "attendance_general".
+ *
+ * @property integer $attendance_general_id
+ * @property integer $academic_day_id
+ * @property integer $student_id
+ * @property string $attendance_status
+ * @property string $remarks
+ * @property string $record_status
+ * @property integer $create_user_id
+ * @property string $create_date
+ * @property integer $update_user_id
+ * @property string $update_date
+ */
+class AttendanceGeneral extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'attendance_general';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['academic_day_id', 'student_id', 'record_status', 'create_user_id', 'create_date'], 'required'],
+            [['academic_day_id', 'student_id', 'create_user_id', 'update_user_id'], 'integer'],
+            [['attendance_status', 'remarks', 'record_status'], 'string'],
+            [['create_date', 'update_date'], 'safe']
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'attendance_general_id' => 'Attendance General ID',
+            'academic_day_id' => 'Academic Day ID',
+            'student_id' => 'Student ID',
+            'attendance_status' => 'Attendance Status',
+            'remarks' => 'Remarks',
+            'record_status' => 'Record Status',
+            'create_user_id' => 'Create User ID',
+            'create_date' => 'Create Date',
+            'update_user_id' => 'Update User ID',
+            'update_date' => 'Update Date',
+        ];
+    }
+}

@@ -1,0 +1,15 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git://github.com/sintret/yii2-chat-adminlte.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	pushurl = git@github.com:sintret/yii2-chat-adminlte.git
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[remote "composer"]
+	url = git://github.com/sintret/yii2-chat-adminlte.git
+	fetch = +refs/heads/*:refs/remotes/composer/*

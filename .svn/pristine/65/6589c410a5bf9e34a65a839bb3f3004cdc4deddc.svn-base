@@ -1,0 +1,313 @@
+<?php
+
+namespace frontend\controllers;
+
+use Yii;
+use app\models\TestExamMarks;
+use app\models\TestExamMarksSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use app\models\ClassTest;
+use yii\helpers\Json;
+use kartik\mpdf\Pdf;
+
+/**
+ * TestExamMarksController implements the CRUD actions for TestExamMarks model.
+ */
+class TestExamMarksController extends Controller
+{
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all TestExamMarks models.
+     * @return mixed
+     */
+    // public function actionIndex()
+    // {
+    //     $searchModel = new TestExamMarksSearch();
+    //     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
+    public function actionIndex($class_test_id)
+    {
+        $searchModel = new TestExamMarksSearch();
+        $searchModel-> class_test_id = $class_test_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+
+        // return $this->renderAjax('index', [
+        //     'searchModel' => $searchModel,
+        //     'dataProvider' => $dataProvider,
+        //     // 'class_test_id' => $class_test_id,
+        // ]);
+        // print_r(Yii::$app->request->post('hasEditable'));
+
+
+        // validate if there is a editable input saved via AJAX
+        if (Yii::$app->request->post('hasEditable')) {
+            // instantiate your book model for saving
+            $test_exam_mark_id = Yii::$app->request->post('editableKey');
+            $model = TestExamMarks::findOne($test_exam_mark_id);
+     
+            // store a default json response as desired by editable
+            $out = Json::encode(['output'=>'', 'message'=>'']);
+     
+            // fetch the first entry in posted data (there should 
+            // only be one entry anyway in this array for an 
+            // editable submission)
+            // - $posted is the posted data for Book without any indexes
+            // - $post is the converted array for single model validation
+            $post = [];
+            $posted = current($_POST['TestExamMarks']);
+            $post['TestExamMarks'] = $posted;
+     
+            // load model like any single model validation
+            if ($model->load($post)) {
+                // can save model or do something before saving model
+                $model->save();
+     
+                // custom output to return to be displayed as the editable grid cell
+                // data. Normally this is empty - whereby whatever value is edited by 
+                // in the input by user is updated automatically.
+                $output = '';
+     
+                // specific use case where you need to validate a specific
+                // editable column posted when you have more than one 
+                // EditableColumn in the grid view. We evaluate here a 
+                // check to see if marks_obtained was posted for the TestExamMarks model
+                if (isset($posted['marks_obtained'])) {
+                   $output =  Yii::$app->formatter->asDecimal($model->marks_obtained, 2);
+                } 
+     
+                // similarly you can check if the name attribute was posted as well
+                // if (isset($posted['remarks'])) {
+                //   $output =  '*****'; // process as you need
+                // } 
+                $out = Json::encode(['output'=>$output, 'message'=>'']);
+            } 
+            // return ajax json encoded response and exit
+            echo $out;
+            return;
+        }
+     
+        // non-ajax - render the grid by default
+        if (Yii::$app->request->isAjax) {
+			return $this->renderAjax('index', [
+				'searchModel' => $searchModel,
+				'dataProvider' => $dataProvider,
+                'class_test_id' => $class_test_id,
+            ]);
+		} else {
+            return $this->render('index', [
+				'searchModel' => $searchModel,
+				'dataProvider' => $dataProvider,
+                'class_test_id' => $class_test_id,
+			]);
+        }
+    }
+
+    /**
+     * Displays a single TestExamMarks model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        if (Yii::$app->request->isAjax) {
+			return $this->renderAjax('view', [
+				'model' => $this->findModel($id),
+            ]);
+		} else {
+            return $this->render('view', [
+				'model' => $this->findModel($id),
+			]);
+        }
+    }
+
+    /**
+     * Creates a new TestExamMarks model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new TestExamMarks();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->test_exam_mark_id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing TestExamMarks model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->test_exam_mark_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing TestExamMarks model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /***
+    * Generate test/exam mark sheet if it does not exist.
+    * Otherwise display the marks entry sheet
+    */
+    public function actionGenerateMarkSheet($class_test_id)
+    {
+        // Check whether marks sheet already exists
+        $test_exam_marks_count = TestExamMarks::find()
+                ->where(['class_test_id' => $class_test_id])
+                ->count();
+
+        // If it's a new entry populate test_exam_marks.
+        if($test_exam_marks_count == 0)
+        {
+            $class_test = ClassTest::find()
+                    ->where(['class_test_id' => $class_test_id])
+                    ->one();
+
+            // Get logged in user_id
+            $user_id = \Yii::$app->user->identity->id;
+            $create_date = date('Y-m-d');
+
+            $class_subject_header_id = $class_test->class_subject_header_id;
+            $maximum_score = $class_test->maximum_score;
+
+            $sql =  'INSERT INTO test_exam_marks(class_test_id, student_id, maximum_score, create_user_id, create_date) ' . 
+                    'SELECT :class_test_id, student_id, :maximum_score, ' . 
+                    ':create_user_id, :create_date ' .
+                    'FROM view_student_subject_class_roll ' .
+                    'WHERE class_subject_header_id = :class_subject_header_id';
+
+            $connection = \Yii::$app->db;
+            $transaction = $connection->beginTransaction();
+            try {
+                $command = $connection->createCommand($sql);
+                $command->bindParam(':class_subject_header_id', $class_subject_header_id);
+                $command->bindParam(':class_test_id', $class_test_id);
+                $command->bindParam(':maximum_score', $maximum_score);
+                $command->bindParam(':create_user_id', $user_id);
+                $command->bindParam(':create_date', $create_date);
+
+                $command->execute();
+                $transaction->commit();
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }    
+        }
+
+        // $searchModel = new TestExamMarksSearch();
+        // $searchModel-> class_test_id = $class_test_id;
+        // $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+     
+        // // // non-ajax - render the grid by default
+        // return $this->renderAjax('index', [
+        //     'dataProvider' => $dataProvider,
+        //     'searchModel' => $searchModel
+        // ]);
+
+        return $this->redirect(['index', 'class_test_id' => $class_test_id]);
+    }
+
+    public function actionListReport($class_test_id)
+    {
+
+        $searchModel = new TestExamMarksSearch();
+        $searchModel-> class_test_id = $class_test_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        // get your HTML raw content without any layouts or scripts
+        $content = $this->renderPartial('_index-report', [ 
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'class_test_id' => $class_test_id,
+            ]);
+
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_LANDSCAPE, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}', 
+             // set mPDF properties on the fly
+            'options' => ['title' => 'Student List Report'],
+             // call mPDF methods on the fly
+            'methods' => [ 
+                'SetHeader'=>['SKYMOUSE EMIS'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+
+        // return the pdf output as per the destination setting
+        return $pdf->render(); 
+    }
+
+    /**
+     * Finds the TestExamMarks model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return TestExamMarks the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = TestExamMarks::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+}

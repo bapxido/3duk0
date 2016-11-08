@@ -1,0 +1,41 @@
+$(function(){
+   //Load dashboard home menu
+	$('a.dashboard').on("click",function(e) {
+		e.preventDefault(); // cancel the link itself
+		e.stopImmediatePropagation();
+		var value = $(this).attr('href');
+
+		$(".content").load(value);
+		$('.content-header > h1:nth-child(1)').html('School Management System');
+	});
+	
+	//Load dashboard settings menu
+	$('a.settings').on("click",function(e) {
+		e.preventDefault(); // cancel the link itself
+		e.stopImmediatePropagation();
+		var value = $(this).attr('href');
+		//$(span:contains("Settings"))
+	  	//$(this).attr("value",value);
+		$(".content").load(value);
+		$('.content-header > h1:nth-child(1)').html('School Management System');
+	});
+	
+	 // Take all href-value and assign it to value-value
+	 $('.showModalButton').each(function(){
+        var value = $(this).attr('href');
+        $(this).attr("value", value);
+    });
+	
+	$('.showModalButton').on("click",function(e) {
+		var value = $(this).attr('href');
+        $(this).attr("value", value);
+		e.preventDefault(); // cancel the link itself
+		//empty modal content
+		$('#modalContent').empty();
+	});
+
+});
+
+
+
+

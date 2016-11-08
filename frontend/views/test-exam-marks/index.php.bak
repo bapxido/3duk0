@@ -1,0 +1,80 @@
+<?php
+
+use yii\helpers\Html;
+// use yii\grid\GridView;
+use kartik\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\TestExamMarksSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Test Exam Marks';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="test-exam-marks-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Test Exam Marks', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            // 'test_exam_mark_id',
+            'classTest.title',
+            'student.fullname',
+            'marks_obtained',
+            'maximum_score',
+            'percentage',
+            // 'remarks:ntext',
+            // 'record_status',
+            // 'create_date',
+            // 'create_user_id',
+            // 'update_date',
+            // 'update_user_id',
+            [
+                'class' => '\kartik\grid\DataColumn',
+                'attribute' => 'marks_obtained',
+                    'editableOptions'=> function ($model, $key, $index) {
+                    // return [
+                    //     'header'=>'Name', 
+                    //     'size'=>'md',
+                    //     'beforeInput' => function ($form, $widget) use ($model, $index) {
+                    //         echo $form->field($model, "marks_obtained")->widget(\kartik\widgets\RangeInput::classname(), [
+                    //             'options' => ['id' => "marks_obtained_{$index}"]
+                    //         ]);
+                    //     }
+                    // ];
+                },
+            ],
+            [
+                // 'editableOptions'=> function ($model, $key, $index) {
+                //     return [
+                //         'header'=>'Name', 
+                //         'size'=>'md',
+                //         'beforeInput' => function ($form, $widget) use ($model, $index) {
+                //             echo $form->field($model, "marks_obtained")->widget(\kartik\widgets\RangeInput::classname(), [
+                //                 'options' => ['id' => "marks_obtained_{$index}"]
+                //             ]);
+                //         }
+                //         'afterInput' => function ($form, $widget) use ($model, $index) {
+                //             echo $form->field($model, "[{$index}]color")->widget(\kartik\widgets\ColorInput::classname(), [
+                //                  'options' => ['id' => "marks_obtained_{$index}"]
+                //             ]);
+                //         }
+                //     ];
+                // }
+            ],
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+        'responsive'=>true,
+        'hover'=>true,
+    ]); ?>
+
+</div>

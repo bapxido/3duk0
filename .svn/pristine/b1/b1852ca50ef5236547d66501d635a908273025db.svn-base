@@ -1,0 +1,165 @@
+<?php
+
+namespace frontend\controllers;
+
+use Yii;
+use app\models\ClassSubjectNotes;
+use app\models\ClassSubjectNotesSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+
+/**
+ * ClassSubjectNotesController implements the CRUD actions for ClassSubjectNotes model.
+ */
+class ClassSubjectNotesController extends Controller
+{
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all ClassSubjectNotes models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        // admin views all
+        // lecturer views own subject notes
+        // student views own subject notes
+        $searchModel = new ClassSubjectNotesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if (Yii::$app->request->isAjax) {
+			return $this->renderAjax('index', [
+				'searchModel' => $searchModel,
+				'dataProvider' => $dataProvider,
+            ]);
+		} else {
+            return $this->render('index', [
+				'searchModel' => $searchModel,
+				'dataProvider' => $dataProvider,
+			]);
+        }
+    }
+
+    /**
+     * Displays a single ClassSubjectNotes model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        if (Yii::$app->request->isAjax) {
+			return $this->renderAjax('view', [
+				'model' => $this->findModel($id),
+            ]);
+		} else {
+            return $this->render('view', [
+				'model' => $this->findModel($id),
+			]);
+        }
+    }
+
+    /**
+     * Creates a new ClassSubjectNotes model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate($class_subject_header_id=1)
+    {
+        // Get logged in user_id
+        $user_id = \Yii::$app->user->identity->id;
+    
+        $model = new ClassSubjectNotes();
+        $model->class_subject_header_id = $class_subject_header_id;
+        $model->notes_document = '';
+        $model->create_user_id = $user_id;
+        $model->create_date = date('Y-m-d');
+
+        if ($model->load(Yii::$app->request->post())) {
+                    // get the instance of the uploaded file
+                    $imageName = $model->topic . '_' . $model->create_date;
+                    
+                    $model->file = UploadedFile::getInstance($model,'file');
+                    
+                    if($model->file != null){
+                        $model->file->saveAs('uploads/'.$imageName.'.'.$model->file->extension);
+                                        
+                        // save the path in the db column
+                        // $model->logo = 'uploads/'.$imageName.'.'.$model->file->extension;
+                        $model->notes_document = 'uploads/'.$imageName.'.'.$model->file->extension;
+                    }
+                    
+                    $model->save();
+            // return $this->redirect(['view', 'id' => $model->class_subject_notes_id]);
+            return $this->goBack();
+         }elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                        'model' => $model
+            ]);
+        } else {
+            return $this->renderAjax('create', [
+            // return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing ClassSubjectNotes model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($class_subject_header_id)
+    {
+        $model = $this->findModel($class_subject_header_id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'class_subject_notes_id' => $model->class_subject_notes_id]);
+        } else {
+            return $this->renderAjax('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing ClassSubjectNotes model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the ClassSubjectNotes model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return ClassSubjectNotes the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = ClassSubjectNotes::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+}

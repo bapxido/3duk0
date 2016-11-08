@@ -1,0 +1,94 @@
+$(function(){
+   //Load dashboard home menu
+	$('a.dashboard').on("click",function(e) {
+		e.preventDefault(); // cancel the link itself
+		e.stopImmediatePropagation();
+		var value = $(this).attr('href');
+
+		$(".content").load(value);
+		$('.content-header > h1:nth-child(1)').html('School Management System');
+	});
+	
+	//Load dashboard settings menu
+	$('a.settings').on("click",function(e) {
+		e.preventDefault(); // cancel the link itself
+		e.stopImmediatePropagation();
+		var value = $(this).attr('href');
+		//$(span:contains("Settings"))
+	  	//$(this).attr("value",value);
+		$(".content").load(value);
+		$('.content-header > h1:nth-child(1)').html('School Management System');
+	});
+	
+	 // Take all href-value and assign it to value-value
+	 $('.showModalButton').each(function(){
+        var value = $(this).attr('href');
+        $(this).attr("value", value);
+    });
+	
+	$('.showModalButton').on("click",function(e) {
+		var value = $(this).attr('href');
+        $(this).attr("value", value);
+		e.preventDefault(); // cancel the link itself
+		//empty modal content
+		$('#modalContent').empty();
+	});
+
+});
+
+$(document).ready(function(){
+	$('.showModalButton').each(function(){
+        var value = $(this).attr('href');
+        $(this).attr("value", value);
+    });
+	
+	$('.showModalButton').on("click",function(e) {
+		e.preventDefault(); // cancel the link itself
+		//empty modal content
+		$('#modalContent').empty();
+	});
+});
+
+$('.showModalButton').each(function(){
+        var value = $(this).attr('href');
+        $(this).attr("value", value);
+    });
+	
+
+
+$('#myModal').on('loaded.bs.modal', function (e) {
+  // do cool stuff here all day… no need to change bootstrap
+  alert('something'); // ?
+	$('a:contains("Update")').addClass("showModalButton");
+	//$('button:submit').addClass("showModalButton");
+	//$('.btn').addClass("showModalButton");
+	//$('th.modalLink').addClass("showModalButton");
+	
+	//Add title attribute to create button by assigning it to anchor content
+	$('a:contains("Create")').each(function(){
+		var title = $(this).html();
+		$(this).attr("title", title);
+	});
+	
+	$('a:contains("Update")').each(function(){
+        var value = $(this).attr('href');
+        $(this).attr("value", value);
+    });
+    
+})
+
+yii.allowAction = function ($e) {
+    var message = $e.data('confirm');
+    return message === undefined || yii.confirm(message, $e);
+};
+yii.confirm = function (message, $e) {
+    bootbox.confirm(message, function (confirmed) {
+        if (confirmed) {
+            yii.handleAction($e);
+        }
+    });
+    // confirm will always return false on the first call
+    // to cancel click handler
+    return false;
+}
+

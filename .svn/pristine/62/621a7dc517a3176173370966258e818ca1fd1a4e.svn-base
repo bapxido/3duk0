@@ -1,0 +1,71 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use app\models\AcademicDay;
+
+/**
+ * AcademicDaySearch represents the model behind the search form about `app\models\AcademicDay`.
+ */
+class AcademicDaySearch extends AcademicDay
+{
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['academic_day_id', 'academic_period_id', 'week_number', 'day_type_id'], 'integer'],
+            [['day_date', 'remarks', 'record_status'], 'safe'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = AcademicDay::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        // $this->load($params);
+
+        // if (!$this->validate()) {
+        //     // uncomment the following line if you do not want to return any records when validation fails
+        //     // $query->where('0=1');
+        //     return $dataProvider;
+        // }
+
+        $query->andFilterWhere([
+            'academic_day_id' => $this->academic_day_id,
+            'academic_period_id' => $this->academic_period_id,
+            'day_date' => $this->day_date,
+            'week_number' => $this->week_number,
+            'day_type_id' => $this->day_type_id,
+        ]);
+
+        $query->andFilterWhere(['like', 'remarks', $this->remarks])
+            ->andFilterWhere(['like', 'record_status', $this->record_status]);
+
+        return $dataProvider;
+    }
+}

@@ -1,0 +1,167 @@
+<?php
+
+namespace frontend\controllers;
+
+use Yii;
+use app\models\AttendanceGeneral;
+use app\models\AttendanceGeneralSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+
+/**
+ * AttendanceGeneralController implements the CRUD actions for AttendanceGeneral model.
+ */
+class AttendanceGeneralController extends Controller
+{
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all AttendanceGeneral models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new AttendanceGeneralSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single AttendanceGeneral model.
+     * @param integer $attendance_general_id
+     * @param integer $academic_day_id
+     * @param integer $student_id
+     * @return mixed
+     */
+    public function actionView($attendance_general_id, $academic_day_id, $student_id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($attendance_general_id, $academic_day_id, $student_id),
+        ]);
+    }
+
+    /**
+     * Creates a new AttendanceGeneral model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        // Get logged in user_id
+        $user_id = \Yii::$app->user->identity->id;
+    
+        $model = new AttendanceGeneral();
+        $model->create_user_id = $user_id;
+        $model->create_date = date('Y-m-d');
+
+
+        if ($model->load(Yii::$app->request->post()) ) {
+            $var_model = $model;
+            $var_student_array = $model->student_id;
+            // $var = implode(',',$var_student_array);
+            // $var_1 = explode(',', $var);
+            // $model->student_id = $var_1[0];
+            // print_r($model->student_id);
+            // die();
+
+            foreach ($var_student_array as $value) {
+                // $model->student_id = 0;
+                $model = new AttendanceGeneral();
+                $model =  $var_model;
+                $model->student_id = $value;
+                # code...
+                // $this->model­->student_id = $value;
+                
+                // print_r('<br/>academic_day_id : ' . $model->academic_day_id);
+                // print_r('<br/>student_id : ' .$model->student_id);
+                // print_r($model);
+
+                $model->save();
+
+            }
+            // die();
+            // $model­->student_id = explode(',', $model­->student_id);
+                return $this->redirect(['index']);
+            // return $this->redirect(['view', 'attendance_general_id' => $model->attendance_general_id]);
+            // return $this->redirect(['view', 'attendance_general_id' => $model->attendance_general_id, 'academic_day_id' => $model->academic_day_id, 'student_id' => $model->student_id]);
+        } else {
+            return $this->renderAjax('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing AttendanceGeneral model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $attendance_general_id
+     * @param integer $academic_day_id
+     * @param integer $student_id
+     * @return mixed
+     */
+    public function actionUpdate($attendance_general_id, $academic_day_id, $student_id)
+    {
+        $model = $this->findModel($attendance_general_id, $academic_day_id, $student_id);
+        $student_id = explode(',', $model->student_id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'attendance_general_id' => $model->attendance_general_id, 'academic_day_id' => $model->academic_day_id, 'student_id' => $model->student_id]);
+        }elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                        'model' => $model
+            ]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing AttendanceGeneral model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $attendance_general_id
+     * @param integer $academic_day_id
+     * @param integer $student_id
+     * @return mixed
+     */
+    public function actionDelete($attendance_general_id, $academic_day_id, $student_id)
+    {
+        $this->findModel($attendance_general_id, $academic_day_id, $student_id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the AttendanceGeneral model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $attendance_general_id
+     * @param integer $academic_day_id
+     * @param integer $student_id
+     * @return AttendanceGeneral the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($attendance_general_id, $academic_day_id, $student_id)
+    {
+        if (($model = AttendanceGeneral::findOne(['attendance_general_id' => $attendance_general_id, 'academic_day_id' => $academic_day_id, 'student_id' => $student_id])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+}

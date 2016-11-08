@@ -1,0 +1,53 @@
+$(function(){
+	// Get the click event  of the create button
+	$('#modalButton').click(function(){
+		$('#modal').modal('show')
+			.find('#modalContent')
+			.load($(this).attr('value'));
+		});
+
+	// Get the click event  of the create header link
+	$('.modalLink').click(function(){
+		$('#modal').modal('show')
+			.find('#modalContent')
+			.load($(this).attr('value'));
+	});
+	
+	// Get the click event  of the create header link
+	$('.modalUpdate').click(function(){
+		$('#modalUpdate').modal('show')
+			.find('#modalContentUpdate')
+			.load($(this).attr('value'));
+	});
+	
+	$('.hide').ready(function(){
+			$('#hide').hide();
+			//$('#hide').fadeToggle(3000);
+		});
+		
+	$(document).ready(function() {
+		$('#hide p').toggle(function() {
+			$('#hide p').addClass('hidden');
+				}, function() {
+			$('#hide p').removeClass('hidden');
+			});
+		});
+		
+	/*$(document).ready(function() {
+		//~ $('#rfqresponselineitem-unit_cost').hide()
+		$('#rfqresponselineitem-unit_cost').change(function(){
+			var unit_cost = parseFloat(this.value);
+			$('rfqresponselineitem-quantity').each(function(){
+				var quantity = parseFloat(this.value);
+				 alert(quantity);
+				});
+			 
+			
+			//~ var total = parseInt(this.value) * parseInt('#rfqresponselineitem-quantity'.value);
+			//~ 
+			//~ ('#rfqresponselineitem-total_cost').text(String(total));		
+			
+			});
+		});*/
+		
+}); // THE END

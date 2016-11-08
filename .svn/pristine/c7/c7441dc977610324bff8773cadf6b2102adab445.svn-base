@@ -1,0 +1,175 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
+
+/**
+ * This is the model class for table "class_subject_header".
+ *
+ * @property integer $class_subject_header_id
+ * @property integer $staff_member_id
+ * @property integer $subject_id
+ * @property string $class_subject_name
+ * @property integer $academic_period_id
+ * @property string $remarks
+ * @property string $record_status
+ * @property integer $create_user_id
+ * @property string $create_date
+ * @property integer $update_user_id
+ * @property ClassSubjectAssignment[] $classSubjectAssignments
+ * @property string $update_date
+ *
+ * @property AcademicPeriod $academicPeriod
+ * @property StaffMember $staffMember
+ * @property Subject $subject
+ * @property ClassSubjectRoll[] $classSubjectRolls
+ * @property ClassTest[] $classTests 
+ */
+class ClassSubjectHeader extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'class_subject_header';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['staff_member_id', 'subject_id', 'class_subject_name', 'academic_period_id', 'create_user_id', 'create_date'], 'required'],
+            [['staff_member_id', 'subject_id', 'academic_period_id', 'create_user_id', 'update_user_id'], 'integer'],
+            [['remarks', 'record_status'], 'string'],
+            [['create_date', 'update_date'], 'safe'],
+            [['class_subject_name'], 'string', 'max' => 250]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'class_subject_header_id' => 'Class Subject Header ID',
+            'staff_member_id' => 'Lecturer/Teacher',
+            'subject_id' => 'Subject',
+            'class_subject_name' => 'Class Subject Name',
+            'academic_period_id' => 'Academic Period',
+            'remarks' => 'Remarks',
+            'record_status' => 'Record Status',
+            'create_user_id' => 'Create User ID',
+            'create_date' => 'Create Date',
+            'update_user_id' => 'Update User ID',
+            'update_date' => 'Update Date',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAcademicPeriod()
+    {
+        return $this->hasOne(AcademicPeriod::className(), ['academic_period_id' => 'academic_period_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClassSubjectAssignments()
+    {
+       return $this->hasMany(ClassSubjectAssignment::className(), ['class_subject_header_id' => 'class_subject_header_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStaffMember()
+    {
+        return $this->hasOne(StaffMember::className(), ['staff_member_id' => 'staff_member_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubject()
+    {
+        return $this->hasOne(Subject::className(), ['subject_id' => 'subject_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClassSubjectRolls()
+    {
+        // print_r($this->hasMany(ClassSubjectRoll::className(), ['class_subject_header_id' => 'class_subject_header_id']));
+        // $query = $this->hasMany(ClassSubjectRoll::className(), ['class_subject_header_id' => 'class_subject_header_id'])->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql;
+        // var_dump($query);
+        // exit();
+        return $this->hasMany(ClassSubjectRoll::className(), ['class_subject_header_id' => 'class_subject_header_id']);
+        // return $this->hasMany(ClassSubjectRoll::className(), ['class_subject_header_id' => 'class_subject_header_id'])
+        //     ->viaTable('class_subject_roll', ['student_course_id' => 'class_subject_header_id']);
+        // getViewStudentSubjectClassRoll();
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClassSubjectNotes()
+    {
+        return $this->hasMany(ClassSubjectNotes::className(), ['class_subject_header_id' => 'class_subject_header_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getViewStudentSubjectClassRollxxxxxxxxxxxx()
+    {
+        // print_r($this->hasMany(ViewStudentSubjectClassRoll::className(), ['class_subject_header_id' => 'class_subject_header_id']));
+        // $query = $this->hasMany(ViewStudentSubjectClassRoll::className(), ['class_subject_header_id' => 'class_subject_header_id'])
+        //     ->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql;
+        // var_dump($query);
+        // die();
+        return $this->hasMany(ViewStudentSubjectClassRoll::className(), ['class_subject_header_id' => 'fullname']);
+    }
+
+    public function getClassTests()
+    {
+        return $this->hasMany(ClassTest::className(), ['class_subject_header_id' => 'class_subject_header_id']);
+    }
+
+    /**
+     * @inheritdoc
+     * @return ClassSubjectHeaderQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ClassSubjectHeaderQuery(get_called_class());
+    }
+    
+    // Get staff members
+    public function getStaffMembers() { // could be a static func as well
+        $models = StaffMember::find()->asArray()->all();
+        return ArrayHelper::map($models, 'staff_member_id', 'fullname');
+    }
+    
+    // Get staff members
+    public function getAcademicPeriods() { // could be a static func as well
+        $models = AcademicPeriod::find()->asArray()->all();
+        return ArrayHelper::map($models, 'academic_period_id', 'academic_period');
+    }
+    
+    // Get subjects
+    public function getSubjects() { // could be a static func as well
+        $models = Subject::find()->asArray()->all();
+        return ArrayHelper::map($models, 'subject_id', 'subject');
+    }
+}

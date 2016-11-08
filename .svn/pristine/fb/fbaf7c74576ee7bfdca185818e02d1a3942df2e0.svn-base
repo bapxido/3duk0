@@ -1,0 +1,90 @@
+<?php
+use yii\helpers\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+
+?>
+<aside class="main-sidebar">
+
+    <section class="sidebar">
+		
+		<?php if (!(Yii::$app->user->isGuest)) { ?>
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+            </div>
+            <div class="pull-left info">
+                <p><?= Yii::$app->user->identity->username ?></p>
+
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <?php } ?>
+
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search..."/>
+              <span class="input-group-btn">
+                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+
+     
+	<?php if (Yii::$app->user->isGuest) { ?>
+	<ul class="sidebar-menu">
+		<li><a href="?r=site%2Findex"><i class="fa fa-dashboard"></i><span>dashboard</span></a></li>
+		<li><a href="?r=site%2Fabout"><i class="fa fa-comment"></i><span>About</span></a></li>
+		<li><a href="?r=site%2Fcontact"><i class="fa fa-envelope"></i><span>Contact</span></a></li>
+		<li><a href="?r=site%2Fsignup"><i class="fa fa-sign-in"></i><span>Register</span></a></li>
+		<li><a href="?r=site%2Flogin"><i class="fa fa-lock"></i><span>Login</span></a></li>
+	</ul>
+	<?php } else { ?>
+	<ul class="sidebar-menu">
+		<li><a class="dashboard" href="?r=site%2Fdashboard"><i class="fa fa-dashboard"></i><span>dashboard</span></a></li>
+		<li><a href="?r=site%2Fabout"><i class="fa fa-comment"></i><span>About</span></a></li>
+		<li><a href="?r=site%2Fcontact"><i class="fa fa-envelope"></i><span>Contact</span></a></li>
+		<li class="treeview"><a href="#" ><i class="fa fa-group treeview"></i><span>Operations</span> <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu">
+				<li><a href="?r=student" tabindex="-1"><i class="fa fa-graduation-cap"></i><span>Student</span></a></li>
+				<li><a href="?r=staff-member" tabindex="-1"><i class="fa fa-group"></i><span>Staff Member</span></a></li>
+				<li><a href="?r=faculty" tabindex="-1"><i class="fa fa-building"></i><span>Faculty</span></a></li>
+				<li><a href="?r=course" tabindex="-1"><i class="fa fa-book"></i><span>Course</span></a></li>
+				<li><a href="?r=class-subject-header" tabindex="-1"><i class="fa fa-book"></i><span>Course Management</span></a></li>
+				<li><a href="?r=guidance-counselling" tabindex="-1"><i class="fa fa-retweet"></i><span>guidance counselling</span></a></li>
+				<li><a href="?r=test-exam-marks" tabindex="-1"><i class="fa fa-book"></i><span>Gradebook</span></a></li>
+			</ul>
+		</li>
+		<li class="treeview"><a class="settings" href="?r=site%2Fsettings" ><i class="fa fa-cog"></i><span>Settings</span><i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu">
+				<li><a href="?r=relationship" tabindex="-1"><i class="fa fa-exchange"></i><span>Relationship</span></a></li>
+				<li><a href="?r=country" tabindex="-1"><i class="fa fa-globe"></i><span>Country</span></a></li>
+				<li><a href="?r=nationality" tabindex="-1"><i class="fa fa-flag"></i><span>Nationality</span></a></li>
+				<li><a href="?r=special-need" tabindex="-1"><i class="fa fa-wheelchair"></i><span>Special Needs</span></a></li>
+				<li><a href="?r=staff-title" tabindex="-1"><i class="fa fa-transgender"></i><span>Title</span></a></li>
+				<li><a href="?r=staff-type" tabindex="-1"><i class="fa fa-user-plus"></i><span>Staff Type</span></a></li>
+				<li><a href="?r=qualification" tabindex="-1"><i class="fa fa-certificate"></i><span>Qualifications</span></a></li>
+				<li><a href="?r=course-type" tabindex="-1"><i class="fa fa-ticket"></i><span>Course Type</span></a></li>
+				<li><a href="?r=subject-type" tabindex="-1"><i class="fa fa-tags"></i><span>Subject Type</span></a></li>
+				<li><a href="?r=academic-period" tabindex="-1"><i class="fa fa-calendar"></i><span>Academic Period</span></a></li>
+				
+				<li><a href="?r=day-type" tabindex="-1"><i class="fa fa-globe"></i><span>Day Type</span></a></li>
+				<li><a href="?r=academic-day" tabindex="-1"><i class="fa fa-calendar"></i><span>Academic Day</span></a></li>
+				<li><a href="?r=school-fees-master" tabindex="-1"><i class="fa fa-money"></i><span>School Fees Master</span></a></li>
+				<li><a href="?r=payment-method" tabindex="-1"><i class="fa fa-credit-card"></i><span>Payment Method</span></a></li>
+				<li><a href="?r=guidance-counselling-category" tabindex="-1"><i class="fa fa-arrows"></i><span>Guidance Counselling Category</span></a></li>
+				<li><a href="?r=class-test-type" tabindex="-1"><i class="fa fa-print"></i><span>Class Test Type</span></a></li>
+				<li><a href="?r=class-test" tabindex="-1"><i class="fa fa-plane"></i><span>Class Type</span></a></li>
+			</ul>
+		</li>
+		<li><a href="?r=site%2Flogout" data-method="post"><i class="fa fa-unlock"></i><span>Logout (<?= Yii::$app->user->identity->username ?>)</span></a></li>
+	</ul>
+	<?php } ?>
+	
+    </section>
+
+</aside>

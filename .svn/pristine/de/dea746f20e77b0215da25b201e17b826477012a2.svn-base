@@ -1,0 +1,54 @@
+<?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ */
+
+namespace frontend\assets;
+
+use yii\web\AssetBundle;
+
+/**
+ * @author Qiang Xue <qiang.xue@gmail.com>
+ * @since 2.0
+ */
+class AppAsset extends AssetBundle
+{
+   public $basePath = '@webroot';
+    public $baseUrl = '@web';
+    public $css = [
+        'css/site.css',
+		'css/custom.css'
+    ];
+    public $js = [
+		'js/popup.js',
+		'js/main.js',
+		'js/highcharts.js',
+		'js/exporting.js',
+    ];
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+    ];
+
+
+ /*
+    public $sourcePath = '@bower/';
+    public $css = [
+		'admin-lte/css/AdminLTE.css',
+		'admin-lte/css/custom.css',
+		'/admin-lte/dist/css/custom.css',
+   
+    ];
+    public $js = [
+	'admin-lte/js/AdminLTE/app.js',
+        'admin-lte/dist/js/popup.js',
+
+   ];
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
+    ];*/
+}

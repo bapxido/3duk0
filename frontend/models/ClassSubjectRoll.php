@@ -1,0 +1,130 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use yii\helpers\ArrayHelper;
+
+/**
+ * This is the model class for table "class_subject_roll".
+ *
+ * @property integer $class_subject_enrolment_id
+ * @property integer $student_course_id
+ * @property integer $class_subject_header_id
+ * @property string $enrolment_date
+ * @property string $remarks
+ * @property string $record_status
+ * @property integer $create_user_id
+ * @property string $create_date
+ * @property integer $update_user_id
+ * @property string $update_date
+ *
+ * @property ClassSubjectHeader $classSubjectHeader
+ * @property StudentCourse $studentCourse
+ */
+class ClassSubjectRoll extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'class_subject_roll';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['student_course_id', 'class_subject_header_id', 'enrolment_date', 'create_user_id', 'create_date'], 'required'],
+            [['student_course_id', 'class_subject_header_id', 'create_user_id', 'update_user_id'], 'integer'],
+            [['enrolment_date', 'create_date', 'update_date'], 'safe'],
+            [['remarks', 'record_status'], 'string']
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'class_subject_enrolment_id' => 'Class Subject Enrolment ID',
+            'student_course_id' => 'Student Course ID',
+            'class_subject_header_id' => 'Class Subject Header',
+            'enrolment_date' => 'Enrolment Date',
+            'remarks' => 'Remarks',
+            'record_status' => 'Record Status',
+            'create_user_id' => 'Create User ID',
+            'create_date' => 'Create Date',
+            'update_user_id' => 'Update User ID',
+            'update_date' => 'Update Date',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClassSubjectHeader()
+    {
+        return $this->hasOne(ClassSubjectHeader::className(), ['class_subject_header_id' => 'class_subject_header_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentCourse()
+    {
+        return $this->hasOne(StudentCourse::className(), ['student_course_id' => 'student_course_id']);
+    }
+    
+    // Get class subject header
+    public function getClassSubjectHeaders() { // could be a static func as well
+        $models = ClassSubjectHeader::find()->asArray()->all();
+        return ArrayHelper::map($models, 'class_subject_header_id', 'class_subject_name');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getViewStudentSubjectClassRoll()
+    {
+        return $this->hasMany(ViewStudentSubjectClassRoll::className(), ['class_subject_enrolment_id' => 'class_subject_enrolment_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getViewStudentCourse()
+    {
+        return $this->hasOne(ViewStudentCourse::className(), ['student_course_id' => 'student_course_id']);
+    }
+
+    // Get student course
+    public function StudentCourses($class_subject_header_id) { // could be a static func as well
+    //~ public function getStudentCourses() { // could be a static func as well
+		// Get StudentCourse_ID NOT in ClassSubjectRoll
+		// SELECT * FROM StudentCourse WHERE StudentCourse_ID NOT IN (SELECT StudentCourse_ID FROM ClassSubjectRoll)
+		 //~ $sql = 'SELECT * FROM student_course WHERE student_course_ID NOT IN ';
+		 //~ $sql += '(SELECT student_course_ID FROM class_subject_roll ';
+		 //~ $sql += 'WHERE class_subject_header_id=:class_subject_header_id)';
+		 //~ 
+		 //~ $models = StudentCourse::findBySql($sql, [':class_subject_header_id' => Customer::STATUS_INACTIVE])->all();
+        // $models = StudentCourse::find()->asArray()->all();
+        //~ $models = StudentCourse::find()
+			//~ ->select('student_course.*')
+			//~ ->leftJoin('class_subject_roll','student_course.student_course_id = class_subject_roll.student_course_id')
+			//~ ->where(['class_subject_roll.student_course_id' => NULL])
+			//~ ->asArray()
+			//~ ->all();
+		$models = ViewStudentCourse::find()
+			->select('view_student_course.*')
+			->leftJoin('class_subject_roll','view_student_course.student_course_id = class_subject_roll.student_course_id')
+			->where(['class_subject_roll.student_course_id' => NULL])
+			->asArray()
+			->all();
+        return ArrayHelper::map($models, 'student_course_id', 'fullname');
+    }
+}

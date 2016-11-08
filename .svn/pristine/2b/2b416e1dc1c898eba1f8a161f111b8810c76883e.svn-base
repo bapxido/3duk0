@@ -1,0 +1,35 @@
+<?php
+
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\Bulletin */
+/* @var $form yii\widgets\ActiveForm */
+?>
+
+<div class="bulletin-form">
+
+    <?php $form = ActiveForm::begin(['layout'=>'horizontal']); ?>
+
+    <?= $form->field($model, 'subject')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'bulletin')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'record_status')->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', ], ['prompt' => '']) ?>
+
+<!--     <?= $form->field($model, 'create_user_id')->textInput() ?>
+
+    <?= $form->field($model, 'create_date')->textInput() ?>
+
+    <?= $form->field($model, 'update_user_id')->textInput() ?>
+
+    <?= $form->field($model, 'update_date')->textInput() ?> -->
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>

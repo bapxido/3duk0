@@ -1,0 +1,66 @@
+<?php
+
+use yii\helpers\Html;
+use kartik\grid\GridView;
+use yii\widgets\Pjax;
+use app\models\CourseSearch;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\FacultySearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+// $this->title = 'Faculties';
+// $this->params['breadcrumbs'][] = $this->title;
+
+// register js
+$this->registerJsFile('@web/js/script.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>
+
+<div class="faculty-index box box-primary">
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Faculty', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Report', ['list-report'], ['class' => 'btn btn-info', 'target' => '_blank']) ?>
+    </p>
+	
+	<?php Pjax::begin(); ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'headerOptions' => ['width' => '10%',],
+                'value' => function($model, $key, $index, $column){
+                    return GridView::ROW_COLLAPSED;
+                },
+                'detail' => function($model, $key, $index, $column){
+                    $searchModel = new CourseSearch();
+                    $searchModel->faculty_id = $model->faculty_id;
+                    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                    return Yii::$app->controller->renderPartial('@app/views/course/index',[
+                        'model' => $searchModel,
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                    ]);
+                },
+            ],
+            //'faculty_id',
+            'faculty',
+            'remarks:ntext',
+            'record_status',
+            //'create_user_id',
+            // 'create_date',
+            // 'update_user_id',
+            // 'update_date',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    <?php Pjax::end(); ?>
+
+</div>
+<?php $this->title = 'Faculties'; ?>

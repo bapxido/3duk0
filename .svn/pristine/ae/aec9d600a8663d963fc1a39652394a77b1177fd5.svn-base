@@ -1,0 +1,56 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\ClassSubjectHeaderSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Class Subject Headers';
+$this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile('/emis/frontend/web/js/script.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>
+<div class="class-subject-header-index box box-primary">
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Class Subject Header', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+	
+	<?php Pjax::begin(); ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            //~ 'class_subject_header_id',
+            [
+				'attribute' => 'staff_member_id',
+				 'value' => 'staffMember.fullname',
+            ],            
+            [
+				'attribute' => 'subject_id',
+				 'value' => 'subject.subject',
+            ], 
+            'class_subject_name',
+			[
+				'attribute' => 'academic_period_id',
+				 'value' => 'academicPeriod.academic_period',
+            ], 
+            // 'remarks:ntext',
+            // 'record_status',
+            // 'create_user_id',
+            // 'create_date',
+            // 'update_user_id',
+            // 'update_date',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    <?php Pjax::end(); ?>
+
+</div>

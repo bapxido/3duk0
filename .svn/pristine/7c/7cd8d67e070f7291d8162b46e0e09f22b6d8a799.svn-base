@@ -1,0 +1,153 @@
+<?php
+/* @var $this yii\web\View */
+$this->title = 'Skymouse Eduko EMIS';
+?>
+<div class="site-index">
+	
+	<div class="row">
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
+			<div class="info-box-content">
+			  <span class="info-box-text">Messages</span>
+			  <span class="info-box-number">1,410</span>
+			</div><!-- /.info-box-content -->
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<span class="info-box-icon bg-green"><i class="fa fa-group"></i></span>
+			<div class="info-box-content">
+			  <span class="info-box-text">Classes</span>
+			  <span class="info-box-number">410</span>
+			</div><!-- /.info-box-content -->
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<span class="info-box-icon bg-yellow"><i class="fa fa-graduation-cap"></i></span>
+			<div class="info-box-content">
+			  <span class="info-box-text">Students</span>
+			  <span id="studentcount" class="info-box-number">0</span>
+			</div><!-- /.info-box-content -->
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		  <div class="info-box">
+			<span class="info-box-icon bg-red"><i class="fa fa-male"></i></span>
+			<div class="info-box-content">
+			  <span  class="info-box-text">Teachers</span>
+			  <span id="teachersCount" class="info-box-number">0</span>
+			</div><!-- /.info-box-content -->
+		  </div><!-- /.info-box -->
+		</div><!-- /.col -->
+	  </div><!-- row -->
+	  
+	 <div class="stats_bar">
+		<div data-step="2" data-intro="<strong>Beautiful Elements</strong> <br/> If you are looking for a different UI, this is for you!." class="butpro butstyle">
+				<div class="sub">
+				  <h2>CLIENTS</h2>
+				  <span id="total_clientes">170</span>
+				</div>
+				<div class="stat">
+					<span class="spk1">
+						<li class="fa fa-user"></li>
+						<canvas height="13" width="74" style="display: inline-block; width: 74px; height: 13px; vertical-align: top;backgroud-color:#ccc;"></canvas>
+					</span>
+				</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>Sales</h2>
+					<span>$951,611</span>
+			</div>
+			<div class="stat">
+				<span class="up"> 13,5%</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>VISITS</h2>
+				<span>125</span>
+			</div>
+			<div class="stat">
+				<span class="down"> 20,7%</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>NEW USERS</h2>
+				<span>18</span>
+			</div>
+			<div class="stat">
+				<span class="equal"> 0%</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>AVERAGE</h2>
+				<span>3%</span>
+			</div>
+			<div class="stat">
+				<span class="spk2">
+					<canvas height="13" width="80" style="display: inline-block; width: 80px; height: 13px; vertical-align: top;"></canvas>
+				</span>
+			</div>
+		</div>
+		
+		<div class="butpro butstyle">
+			<div class="sub">
+				<h2>Downloads</h2>
+				<span>184</span>
+			</div>
+			<div class="stat">
+				<span class="spk3">
+					<canvas height="13" width="80" style="display: inline-block; width: 80px; height: 13px; vertical-align: top;"></canvas>
+				</span>
+			</div>
+		</div>
+	</div>
+			
+    <div class="body-content">
+
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

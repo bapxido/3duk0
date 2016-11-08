@@ -1,0 +1,53 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\CourseSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Courses';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="course-index  box box-primary">
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+	
+	<?php Pjax::begin(); ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            //'course_id',
+            // [
+    		// 'attribute' => 'faculty_id',
+    		// 'value' => 'faculty.faculty'
+    		// ],
+            'course',
+            'course_code',
+             [
+			 'attribute' => 'course_type_id',
+			 'value' => 'courseType.course_type'
+			 ],
+            // 'course_duration',
+            // 'remarks:ntext',
+            // 'record_status',
+            // 'create_user_id',
+            // 'create_date',
+            // 'update_user_id',
+            // 'update_date',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    <?php Pjax::end(); ?>
+
+</div>

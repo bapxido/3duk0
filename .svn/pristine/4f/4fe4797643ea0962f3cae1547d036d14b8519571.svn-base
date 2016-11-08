@@ -1,0 +1,166 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use yii\helpers\ArrayHelper;
+
+/**
+ * This is the model class for table "student".
+ *
+ * @property integer $student_id
+ * @property string $first_name
+ * @property string $middle_name
+ * @property string $last_name
+ * @property string $birth_date
+ * @property string $birth_place
+ * @property string $sex
+ * @property string $nationality
+ * @property string $national_id
+ * @property string $passport_number
+ * @property string $fullname
+ * @property string $photo
+ * @property string $remarks
+ * @property string $record_status
+ * @property integer $create_user_id
+ * @property integer $update_user_id
+ * @property string $create_date
+ * @property string $update_date
+ *
+ * @property SchoolFeesStudentBill[] $schoolFeesStudentBills 
+ * @property StudentContacts[] $studentContacts
+ * @property StudentCourse[] $studentCourses 
+ * @property StudentGuardian[] $studentGuardians
+ * @property StudentRegistration[] $studentRegistrations
+ */
+class Student extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+     
+    public $file; 
+    
+    public static function tableName()
+    {
+        return 'student';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['first_name', 'last_name', 'birth_date'], 'required'],
+            [['birth_date', 'create_date', 'update_date'], 'safe'],
+            [['sex', 'remarks', 'record_status'], 'string'],
+            [['create_user_id', 'update_user_id'], 'integer'],
+            [['first_name', 'middle_name', 'last_name', 'birth_place', 'nationality'], 'string', 'max' => 50],
+            [['national_id', 'passport_number'], 'string', 'max' => 20],
+            [['fullname'], 'string', 'max' => 152],
+            [['photo'], 'string', 'max' => 255],
+            [['file'], 'file'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'student_id' => 'Student ID',
+            'first_name' => 'First Name',
+            'middle_name' => 'Middle Name',
+            'last_name' => 'Last Name',
+            'birth_date' => 'Birth Date',
+            'birth_place' => 'Birth Place',
+            'sex' => 'Sex',
+            'nationality' => 'Nationality',
+            'national_id' => 'National ID',
+            'passport_number' => 'Passport Number',
+            'fullname' => 'Fullname',
+            'photo' => 'Photo',
+            'remarks' => 'Remarks',
+            'record_status' => 'Record Status',
+            'create_user_id' => 'Create User ID',
+            'update_user_id' => 'Update User ID',
+            'create_date' => 'Create Date',
+            'update_date' => 'Update Date',
+            'file' => 'Photo file'
+        ];
+    }
+    
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGenderStatistics() 
+    { 
+       //return $this->hasMany(SchoolFeesStudentBill::className(), ['student_id' => 'student_id']); 
+       
+    } 
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSchoolFeesStudentBills() 
+    { 
+       return $this->hasMany(SchoolFeesStudentBill::className(), ['student_id' => 'student_id']); 
+    } 
+ 
+   /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+    public function getStudentContacts()
+    {
+        return $this->hasMany(StudentContacts::className(), ['student_id' => 'student_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentGuardians()
+    {
+        return $this->hasMany(StudentGuardian::className(), ['student_id' => 'student_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentRegistrations()
+    {
+        return $this->hasMany(StudentRegistration::className(), ['student_id' => 'student_id']);
+    }
+    
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentSpecialNeeds()
+    {
+        return $this->hasMany(StudentSpecialNeeds::className(), ['student_id' => 'student_id']);
+    }
+    
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentCourses()
+    {
+        return $this->hasMany(StudentCourse::className(), ['student_id' => 'student_id']);
+    }
+    
+    // Get nationalities
+    public function getNationalities() { // could be a static func as well
+        $models = Nationality::find()->asArray()->all();
+        return ArrayHelper::map($models, 'nationality', 'nationality');
+    }
+
+    /**
+     * @inheritdoc
+     * @return StudentQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new StudentQuery(get_called_class());
+    }
+}

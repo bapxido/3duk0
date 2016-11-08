@@ -1,0 +1,15 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git://github.com/ScottHuangZL/yii2-google-chart.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	pushurl = git@github.com:ScottHuangZL/yii2-google-chart.git
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[remote "composer"]
+	url = git://github.com/ScottHuangZL/yii2-google-chart.git
+	fetch = +refs/heads/*:refs/remotes/composer/*

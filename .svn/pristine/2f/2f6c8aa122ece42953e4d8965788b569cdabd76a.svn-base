@@ -1,0 +1,4 @@
+.btn-noborder {
+	border:20px;
+	margin-top:10px;
+}
